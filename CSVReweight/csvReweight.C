@@ -27,7 +27,11 @@
 #include "TLorentzVector.h"
 #include "Math/Interpolator.h"
 
-//Include BTagCalibrationStandalone class === Incomplete ===
+//Include BTagCalibrationStandalone class
+///========Solution section of code (1 of 3)=========
+#include "BTagCalibrationStandalone.h"
+#include "BTagCalibrationStandalone.cpp"
+///========End of solution section of code (1 of 3)=========
 
 
 #ifdef __MAKECINT__
@@ -212,14 +216,29 @@ void csvReweight(bool isHF=1, int insample=1, int reportEvery=100000) {
   
     
  //=================================================================================================================================
- //Load the .csv file containing the SFs using BTagCalibration Standalone tool === Incomplete ===
+ //Load the .csv file containing the SFs using BTagCalibration Standalone tool
  //=================================================================================================================================
   
+  ///========Solution section of code (1 of 3)=========
   
-  // <Lines of code to initialize the BTagCalibration Standalone tool>
+  std::cout << "===> Loading the input .csv SF file..." << std::endl;
   
+  std::string inputCSVfile = "CSVv2_Moriond17_B_H.csv";  
+  std::string measType = "iterativefit";
+  std::string sysType = "central";
   
-  //Working points of CSV:
+  BTagCalibration calib("csvv2", inputCSVfile);
+  BTagCalibrationReader reader(BTagEntry::OP_RESHAPING, sysType) ;
+  
+  reader.load(calib, BTagEntry::FLAV_B, measType);
+  reader.load(calib, BTagEntry::FLAV_C, measType);
+  reader.load(calib, BTagEntry::FLAV_UDSG, measType);
+  
+  std::cout << "\tInput CSV weight file = " << inputCSVfile << "; measurementType = " << measType << "; sysType = " << sysType << std::endl;
+  
+  ///========End of solution section of code (1 of 3)=========
+  
+  //Working points of CSV
   
   double Mwp = 0.8484; //Medium WP
   double Lwp = 0.5426; //Loose WP
@@ -345,8 +364,42 @@ void csvReweight(bool isHF=1, int insample=1, int reportEvery=100000) {
 	
 	double newCSVwgt = 1.;
 	
-    // <Script to implement BTagCalibrationReader> === Incomplete ===
-   
+	///========Solution section of code (2 of 3)=========
+	
+    // Using BTagCalibrationReader
+
+    double csvWgtHF = 1., csvWgtLF = 1., csvWgtC = 1.;
+    double csvWgtTotal = 1.;
+    
+    if ( insample>=0 ) {		//Do it for MC only, not data
+		for( int iJet=0; iJet<int(jet_vect_TLV.size()); iJet++ ){ 
+			TLorentzVector myJet = jet_vect_TLV[iJet];		
+			  
+			float csv = jet_CSV[iJet];
+			float jetPt = myJet.Pt();
+			float jetAbsEta = fabs(myJet.Eta());
+			int flavor = jet_flavour[iJet];
+
+			if (abs(flavor) == 5 ){    //HF		  
+			  double iCSVWgtHF = reader.eval(BTagEntry::FLAV_B, jetAbsEta, jetPt, csv);		  
+			  if( iCSVWgtHF!=0 ) csvWgtHF *= iCSVWgtHF;		
+			}
+			else if( abs(flavor) == 4 ){  //C
+			  double iCSVWgtC = reader.eval(BTagEntry::FLAV_C, jetAbsEta, jetPt, csv);
+			  if( iCSVWgtC!=0 ) csvWgtC *= iCSVWgtC;	   
+			}
+			else { //LF
+			  double iCSVWgtLF = reader.eval(BTagEntry::FLAV_UDSG, jetAbsEta, jetPt, csv);
+			  if( iCSVWgtLF!=0 ) csvWgtLF *= iCSVWgtLF;
+			}
+		 }
+   	    csvWgtTotal = csvWgtHF * csvWgtC * csvWgtLF;   
+    }
+    
+    newCSVwgt = csvWgtTotal;
+    
+    ///========End of solution section of code (2 of 3)=========   
+    
     wgt *= newCSVwgt;
 
     if (insample < 0) wgt = 1;
