@@ -3,3 +3,5 @@
 *-checkpoint.ipynb
 *.o
 *.so
+*.d
+*.pcm
