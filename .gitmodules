@@ -1,0 +1,3 @@
+[submodule "CFIT"]
+	path = CFIT
+	url = https://github.com/kskovpen/CFIT
