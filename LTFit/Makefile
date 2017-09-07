@@ -22,7 +22,7 @@ ADDINC = $(CFITINC)
 
 SRC = test.cxx
 
-INC = 
+INC = ../CFIT/libCFIT.so
 
 OBJ = test.o
 
@@ -32,6 +32,9 @@ all:  	     		$(EXE)
 #			@rm -f *.o
 
 $(EXE):     	 	$(OBJ) $@
+
+$(INC):
+	cd ../CFIT/ && make && cd -
 
 $(OBJ):     		$(SRC) $(INC)
 		        $(CC) -c $(ROOTCFLAGS) $(ADDINC) $(SRC)
