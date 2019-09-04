@@ -151,21 +151,21 @@ void makePlots() {
 	  ////
 	  if( !varName.Contains ("flavour") && !varName.Contains ("nJets") && !varName.Contains ("nTags") 
 		  && !varName.Contains ("mass_leplep") ){
-		h_var_data->Rebin(4);
-		h_var_ttjets->Rebin(4);
-		h_var_zjets->Rebin(4);
-		h_var_lowMasszjets->Rebin(4);
-		h_var_tW->Rebin(4);
-		h_var_WW->Rebin(4);
+		h_var_data->Rebin(6);
+		h_var_ttjets->Rebin(6);
+		h_var_zjets->Rebin(6);
+		h_var_lowMasszjets->Rebin(6);
+		h_var_tW->Rebin(6);
+		h_var_WW->Rebin(6);
 
-		if(varName.Contains ("csv")){
-		  h_var_data->Rebin(2);
-		  h_var_ttjets->Rebin(2);
-		  h_var_zjets->Rebin(2);
-		  h_var_lowMasszjets->Rebin(2);
-		  h_var_tW->Rebin(2);
-		  h_var_WW->Rebin(2);
-		}
+// 		if(varName.Contains ("csv")){
+// 		  h_var_data->Rebin(2);
+// 		  h_var_ttjets->Rebin(2);
+// 		  h_var_zjets->Rebin(2);
+// 		  h_var_lowMasszjets->Rebin(2);
+// 		  h_var_tW->Rebin(2);
+// 		  h_var_WW->Rebin(2);
+// 		}
 	  }
 	  h_var_data->SetStats(0);
 
