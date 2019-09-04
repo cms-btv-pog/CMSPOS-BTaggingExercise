@@ -74,7 +74,8 @@ void csvReweight(bool isHF=1, int insample=1, int reportEvery=100000) {
   double mySample_xSec_ = 1.;
   double mySample_nGen_ = 1.;
   std::string mySample_sampleName_ = "default";
-  std::string mySample_inputDir_ = "/afs/cern.ch/work/s/spmondal/public/BTVCSVReweight/Samples/";
+  //std::string mySample_inputDir_ = "/afs/cern.ch/work/s/spmondal/public/BTVCSVReweight/Samples/";     // When /afs is mounted
+  std::string mySample_inputDir_ = "/net/data_cms/cmspos/BTV/performance/csvReweight/";                 // RWTH Aachen Physics cluster
   
   //******MC*****
   if( insample==2500 ){
